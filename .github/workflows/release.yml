@@ -1,13 +1,16 @@
 name: Release
 
-# Push a tag like v0.1.0 (or v0.2.0-beta.1 for a pre-release) to publish.
+# Publish by either:
+#  - pushing a tag like v0.1.0 (or v0.2.0-beta.1 for a pre-release), or
+#  - running this workflow manually on a branch with a new tag name: the release
+#    (and its tag) is created at the commit the workflow ran on.
 on:
   push:
     tags: ['v*']
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Existing tag to (re)build, e.g. v0.1.0'
+        description: 'Tag to publish, e.g. v0.1.0 (created at the selected branch head if missing)'
         required: true
 
 permissions:
@@ -31,7 +34,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ inputs.tag || github.ref }}
+          # Manual runs build the exact commit they were started on.
+          ref: ${{ github.sha }}
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: global.json
@@ -77,6 +81,7 @@ jobs:
       - uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ inputs.tag || github.ref_name }}
+          target_commitish: ${{ github.sha }}
           prerelease: ${{ contains(inputs.tag || github.ref_name, '-') }}
           generate_release_notes: true
           files: dist/*

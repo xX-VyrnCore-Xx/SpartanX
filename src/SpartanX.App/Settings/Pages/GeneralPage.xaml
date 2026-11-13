@@ -1,0 +1,69 @@
+<UserControl
+    x:Class="SpartanX.App.Settings.Pages.GeneralPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:tk="using:CommunityToolkit.WinUI.Controls"
+    xmlns:l="using:SpartanX.App.Localization">
+
+    <StackPanel Spacing="4">
+        <InfoBar x:Name="RestartBar" IsOpen="False" Severity="Informational" Title="{l:Tr Key=Settings.General.RestartRequired}">
+            <InfoBar.ActionButton>
+                <Button Content="{l:Tr Key=Settings.General.RestartNow}" Click="Restart_Click" />
+            </InfoBar.ActionButton>
+        </InfoBar>
+
+        <tk:SettingsCard Header="{l:Tr Key=Settings.General.Language}" Description="{l:Tr Key=Settings.General.LanguageDescription}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE774;" /></tk:SettingsCard.HeaderIcon>
+            <ComboBox x:Name="LanguageBox" MinWidth="180" SelectionChanged="Language_SelectionChanged" />
+        </tk:SettingsCard>
+
+        <tk:SettingsCard Header="{l:Tr Key=Settings.General.LaunchAtStartup}" Description="{l:Tr Key=Settings.General.LaunchAtStartupDescription}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE7E8;" /></tk:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind S.General.LaunchAtStartup, Mode=TwoWay}" />
+        </tk:SettingsCard>
+
+        <tk:SettingsCard Header="{l:Tr Key=Settings.General.HideTaskbar}" Description="{l:Tr Key=Settings.General.HideTaskbarDescription}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE75B;" /></tk:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind S.General.HideWindowsTaskbar, Mode=TwoWay}" />
+        </tk:SettingsCard>
+
+        <TextBlock Text="{l:Tr Key=Settings.General.Updates}" Style="{StaticResource BodyStrongTextBlockStyle}" Margin="2,20,0,4" />
+        <tk:SettingsExpander Header="{l:Tr Key=Settings.General.CheckForUpdates}" IsExpanded="True">
+            <tk:SettingsExpander.HeaderIcon><FontIcon Glyph="&#xE895;" /></tk:SettingsExpander.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind S.General.CheckForUpdates, Mode=TwoWay}" />
+            <tk:SettingsExpander.Items>
+                <tk:SettingsCard Header="{l:Tr Key=Settings.General.IncludePrereleases}">
+                    <ToggleSwitch IsOn="{x:Bind S.General.IncludePrereleases, Mode=TwoWay}" />
+                </tk:SettingsCard>
+                <tk:SettingsCard x:Name="UpdateCard" Header="{l:Tr Key=Settings.General.CheckNow}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <ProgressRing x:Name="UpdateRing" IsActive="False" Width="18" Height="18" />
+                        <Button x:Name="InstallButton" Visibility="Collapsed" Style="{StaticResource AccentButtonStyle}" Content="{l:Tr Key=Settings.General.InstallUpdate}" Click="Install_Click" />
+                        <Button x:Name="CheckButton" Content="{l:Tr Key=Settings.General.CheckNow}" Click="Check_Click" />
+                    </StackPanel>
+                </tk:SettingsCard>
+            </tk:SettingsExpander.Items>
+        </tk:SettingsExpander>
+
+        <TextBlock Text="{l:Tr Key=Settings.General.Maintenance}" Style="{StaticResource BodyStrongTextBlockStyle}" Margin="2,20,0,4" />
+        <tk:SettingsCard Header="{l:Tr Key=Settings.General.RunSetup}" Description="{l:Tr Key=Settings.General.RunSetupDescription}" IsClickEnabled="True" Click="RunSetup_Click">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE8E1;" /></tk:SettingsCard.HeaderIcon>
+        </tk:SettingsCard>
+        <tk:SettingsCard Header="{l:Tr Key=Settings.General.OpenDataFolder}" IsClickEnabled="True" Click="DataFolder_Click">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE838;" /></tk:SettingsCard.HeaderIcon>
+        </tk:SettingsCard>
+        <tk:SettingsCard Header="{l:Tr Key=Settings.General.Reset}" Description="{l:Tr Key=Settings.General.ResetDescription}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE777;" /></tk:SettingsCard.HeaderIcon>
+            <Button Content="{l:Tr Key=Settings.General.ResetButton}">
+                <Button.Flyout>
+                    <Flyout x:Name="ResetFlyout">
+                        <StackPanel Spacing="12" MaxWidth="260">
+                            <TextBlock Text="{l:Tr Key=Settings.General.ResetConfirm}" TextWrapping="Wrap" />
+                            <Button Content="{l:Tr Key=Settings.General.ResetButton}" Style="{StaticResource AccentButtonStyle}" Click="Reset_Click" />
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </tk:SettingsCard>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,62 @@
+<Window
+    x:Class="SpartanX.App.Welcome.WelcomeWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="using:SpartanX.App.Localization"
+    Title="SpartanX">
+
+    <Grid x:Name="Root">
+        <!-- Soft, slowly drifting colour field behind the "hello" screen. -->
+        <Grid x:Name="Aurora" IsHitTestVisible="False">
+            <Ellipse x:Name="Blob1" Width="620" Height="620" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-160,-200,0,0">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#99D63031" Offset="0" />
+                        <GradientStop Color="#00D63031" Offset="1" />
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Ellipse x:Name="Blob2" Width="560" Height="560" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-140,-180">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#88ECB460" Offset="0" />
+                        <GradientStop Color="#00ECB460" Offset="1" />
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Ellipse x:Name="Blob3" Width="520" Height="520" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="260,-260,0,0">
+                <Ellipse.Fill>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#665E5CE6" Offset="0" />
+                        <GradientStop Color="#005E5CE6" Offset="1" />
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+        </Grid>
+
+        <!-- Drag area for the borderless title bar. -->
+        <Grid x:Name="TitleBarArea" Height="40" VerticalAlignment="Top" Background="Transparent" />
+
+        <!-- Current page. -->
+        <Grid x:Name="Stage" Margin="0,40,0,96" />
+
+        <!-- Footer: back · progress · continue -->
+        <Grid x:Name="Footer" VerticalAlignment="Bottom" Height="96" Padding="48,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="BackButton" Click="Back_Click" Padding="20,9" CornerRadius="20" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon FontFamily="{StaticResource SymbolFont}" Glyph="&#xE72B;" FontSize="12" />
+                    <TextBlock x:Name="BackText" />
+                </StackPanel>
+            </Button>
+            <StackPanel x:Name="Dots" Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" />
+            <Button x:Name="NextButton" Grid.Column="2" Click="Next_Click" Style="{StaticResource PillAccentButtonStyle}" HorizontalAlignment="Right">
+                <TextBlock x:Name="NextText" />
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

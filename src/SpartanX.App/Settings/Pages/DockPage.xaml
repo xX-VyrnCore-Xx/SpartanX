@@ -1,0 +1,102 @@
+<UserControl
+    x:Class="SpartanX.App.Settings.Pages.DockPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:tk="using:CommunityToolkit.WinUI.Controls"
+    xmlns:core="using:SpartanX.Core.Settings"
+    xmlns:h="using:SpartanX.App.Helpers"
+    xmlns:l="using:SpartanX.App.Localization">
+
+    <StackPanel Spacing="4">
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Dock.Enabled}" Description="{l:Tr Key=Settings.Dock.EnabledDescription}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE7C4;" /></tk:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind D.Enabled, Mode=TwoWay}" />
+        </tk:SettingsCard>
+
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Dock.Position}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE8A0;" /></tk:SettingsCard.HeaderIcon>
+            <ComboBox x:Name="PositionBox" MinWidth="160" />
+        </tk:SettingsCard>
+
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Dock.Size}" Description="{x:Bind h:Bind.Round(D.IconSize), Mode=OneWay}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE740;" /></tk:SettingsCard.HeaderIcon>
+            <Slider Width="220" Minimum="32" Maximum="96" StepFrequency="2" Value="{x:Bind D.IconSize, Mode=TwoWay}" />
+        </tk:SettingsCard>
+
+        <tk:SettingsExpander Header="{l:Tr Key=Settings.Dock.Magnification}" Description="{l:Tr Key=Settings.Dock.MagnificationDescription}" IsExpanded="True">
+            <tk:SettingsExpander.HeaderIcon><FontIcon Glyph="&#xE71E;" /></tk:SettingsExpander.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind D.Magnification, Mode=TwoWay}" />
+            <tk:SettingsExpander.Items>
+                <tk:SettingsCard Header="{l:Tr Key=Settings.Dock.MagnificationScale}" Description="{x:Bind h:Bind.Multiplier(D.MagnificationScale), Mode=OneWay}"
+                                 IsEnabled="{x:Bind D.Magnification, Mode=OneWay}">
+                    <Slider Width="220" Minimum="1.1" Maximum="2.5" StepFrequency="0.05" Value="{x:Bind D.MagnificationScale, Mode=TwoWay}" />
+                </tk:SettingsCard>
+            </tk:SettingsExpander.Items>
+        </tk:SettingsExpander>
+
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Dock.AutoHide}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE73F;" /></tk:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind D.AutoHide, Mode=TwoWay}" />
+        </tk:SettingsCard>
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Dock.Indicators}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE91F;" /></tk:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind D.ShowRunningIndicators, Mode=TwoWay}" />
+        </tk:SettingsCard>
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Dock.Bounce}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE7AD;" /></tk:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind D.BounceOnLaunch, Mode=TwoWay}" />
+        </tk:SettingsCard>
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Dock.MinimizeOnClick}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE921;" /></tk:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind D.MinimizeOnClickWhenActive, Mode=TwoWay}" />
+        </tk:SettingsCard>
+
+        <TextBlock Text="{l:Tr Key=Settings.Dock.PinnedApps}" Style="{StaticResource BodyStrongTextBlockStyle}" Margin="2,20,0,4" />
+        <tk:SettingsExpander Header="{l:Tr Key=Settings.Dock.PinnedApps}" Description="{l:Tr Key=Settings.Dock.PinnedAppsDescription}" IsExpanded="True">
+            <tk:SettingsExpander.HeaderIcon><FontIcon Glyph="&#xE718;" /></tk:SettingsExpander.HeaderIcon>
+            <Button Content="{l:Tr Key=Settings.Dock.AddApp}" Click="AddApp_Click" />
+            <tk:SettingsExpander.ItemsHeader>
+                <ListView x:Name="PinnedList" ItemsSource="{x:Bind D.PinnedApps}" SelectionMode="None" CanReorderItems="True" AllowDrop="True" MaxHeight="320">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="core:PinnedApp">
+                            <Grid Padding="8,6" ColumnSpacing="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <FontIcon Glyph="&#xE76F;" FontSize="12" Opacity="0.5" />
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="{x:Bind Name}" />
+                                    <TextBlock Text="{x:Bind Path}" FontSize="11" Opacity="0.55" TextTrimming="CharacterEllipsis" />
+                                </StackPanel>
+                                <Button Grid.Column="2" Tag="{x:Bind}" Click="RemovePin_Click" Padding="8,4">
+                                    <FontIcon Glyph="&#xE74D;" FontSize="13" />
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </tk:SettingsExpander.ItemsHeader>
+        </tk:SettingsExpander>
+
+        <tk:SettingsExpander Header="{l:Tr Key=Settings.Dock.Stacks}" Description="{l:Tr Key=Settings.Dock.StacksDescription}" IsExpanded="True">
+            <tk:SettingsExpander.HeaderIcon><FontIcon Glyph="&#xE8B7;" /></tk:SettingsExpander.HeaderIcon>
+            <Button Content="{l:Tr Key=Settings.Dock.AddFolder}" Click="AddFolder_Click" />
+            <tk:SettingsExpander.ItemsHeader>
+                <ListView ItemsSource="{x:Bind D.Stacks}" SelectionMode="None" MaxHeight="240">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <Grid Padding="8,6">
+                                <TextBlock Text="{x:Bind}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,48,0" />
+                                <Button HorizontalAlignment="Right" Tag="{x:Bind}" Click="RemoveStack_Click" Padding="8,4">
+                                    <FontIcon Glyph="&#xE74D;" FontSize="13" />
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </tk:SettingsExpander.ItemsHeader>
+        </tk:SettingsExpander>
+    </StackPanel>
+</UserControl>

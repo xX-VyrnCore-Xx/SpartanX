@@ -1,0 +1,16 @@
+<UserControl
+    x:Class="SpartanX.App.Welcome.Pages.DoneStep"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="using:SpartanX.App.Localization">
+
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="22" MaxWidth="560">
+        <Image x:Name="Logo" Source="ms-appx:///Assets/Logo.png" Width="128" Height="128" />
+        <TextBlock Text="{l:Tr Key=Welcome.Done.Title}" Style="{StaticResource TitleLargeTextBlockStyle}" HorizontalAlignment="Center" />
+        <TextBlock Text="{l:Tr Key=Welcome.Done.Subtitle}" Opacity="0.75" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" />
+        <StackPanel Spacing="6" HorizontalAlignment="Center" Opacity="0.7">
+            <TextBlock Text="{l:Tr Key=Welcome.Done.Tip1}" FontSize="12" HorizontalAlignment="Center" />
+            <TextBlock Text="{l:Tr Key=Welcome.Done.Tip2}" FontSize="12" HorizontalAlignment="Center" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,248 @@
+<Window
+    x:Class="SpartanX.App.Shell.IslandWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="using:SpartanX.App.Controls"
+    xmlns:h="using:SpartanX.App.Helpers"
+    xmlns:l="using:SpartanX.App.Localization"
+    Title="SpartanX Island">
+
+    <Grid x:Name="Root" Background="Transparent">
+        <Border x:Name="Pill"
+                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,2,0,0"
+                Width="150" Height="32" CornerRadius="16"
+                Background="{StaticResource IslandBackgroundBrush}"
+                RequestedTheme="Dark"
+                PointerEntered="Pill_PointerEntered"
+                PointerExited="Pill_PointerExited"
+                Tapped="Pill_Tapped">
+            <Grid x:Name="PillContent" Padding="12,0">
+
+                <!-- ============ COMPACT ============ -->
+                <Grid x:Name="CompactMedia" Visibility="Collapsed">
+                    <Border Width="20" Height="20" CornerRadius="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#22FFFFFF">
+                        <Image x:Name="ArtCompact" Stretch="UniformToFill" />
+                    </Border>
+                    <c:AudioBars HorizontalAlignment="Right" MaxBarHeight="14" IsPlaying="{x:Bind ViewModel.IsMediaPlaying, Mode=OneWay}" />
+                </Grid>
+
+                <Grid x:Name="CompactTimer" Visibility="Collapsed">
+                    <FontIcon HorizontalAlignment="Left" FontFamily="{StaticResource SymbolFont}" FontSize="14" Glyph="&#xE916;" Foreground="#FFFF9F0A" />
+                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{x:Bind ViewModel.TimerText, Mode=OneWay}" Foreground="#FFFF9F0A" FontWeight="SemiBold" FontSize="13" />
+                </Grid>
+
+                <Grid x:Name="CompactVolume" Visibility="Collapsed">
+                    <FontIcon x:Name="CompactVolumeIcon" HorizontalAlignment="Left" FontFamily="{StaticResource SymbolFont}" FontSize="14" Glyph="&#xE767;" Foreground="White" />
+                    <ProgressBar HorizontalAlignment="Right" Width="90" VerticalAlignment="Center" Maximum="100"
+                                 Value="{x:Bind h:Bind.Percent(ViewModel.Volume.Level), Mode=OneWay}" Foreground="White" />
+                </Grid>
+
+                <Grid x:Name="CompactBattery" Visibility="Collapsed">
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{x:Bind ViewModel.BatteryText, Mode=OneWay}" Foreground="White" FontSize="12" />
+                    <FontIcon x:Name="CompactBatteryIcon" HorizontalAlignment="Right" FontFamily="{StaticResource SymbolFont}" FontSize="16" Glyph="&#xEBB5;" Foreground="#FF30D158" />
+                </Grid>
+
+                <Grid x:Name="CompactNetwork" Visibility="Collapsed">
+                    <FontIcon x:Name="CompactNetworkIcon" HorizontalAlignment="Left" FontFamily="{StaticResource SymbolFont}" FontSize="14" Glyph="&#xE701;" Foreground="White" />
+                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{x:Bind ViewModel.NetworkText, Mode=OneWay}" Foreground="White" FontSize="12" MaxWidth="180" TextTrimming="CharacterEllipsis" />
+                </Grid>
+
+                <Grid x:Name="CompactNotification" Visibility="Collapsed">
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{x:Bind ViewModel.Notification.AppName, Mode=OneWay, FallbackValue=''}" Foreground="White" FontSize="12" FontWeight="SemiBold" MaxWidth="200" TextTrimming="CharacterEllipsis" />
+                    <Ellipse HorizontalAlignment="Right" Width="8" Height="8" Fill="{StaticResource SpartanAccentBrush}" />
+                </Grid>
+
+                <Grid x:Name="CompactWeather" Visibility="Collapsed">
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Segoe UI Emoji" FontSize="14" Text="{x:Bind ViewModel.Weather.Glyph, Mode=OneWay, FallbackValue=''}" />
+                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="White" FontSize="13" FontWeight="SemiBold" Text="{x:Bind ViewModel.Weather.TemperatureText, Mode=OneWay, FallbackValue=''}" />
+                </Grid>
+
+                <Grid x:Name="CompactTimerDone" Visibility="Collapsed">
+                    <FontIcon HorizontalAlignment="Left" FontFamily="{StaticResource SymbolFont}" FontSize="14" Glyph="&#xE916;" Foreground="#FFFF9F0A" />
+                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{l:Tr Key=Island.Timer.Done}" Foreground="#FFFF9F0A" FontSize="12" FontWeight="SemiBold" />
+                </Grid>
+
+                <!-- ============ PEEK (hover / auto) ============ -->
+                <Grid x:Name="PeekIdle" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                        <TextBlock Text="{x:Bind ViewModel.ClockText, Mode=OneWay}" Foreground="White" FontSize="15" FontWeight="SemiBold" />
+                        <TextBlock Text="{x:Bind ViewModel.DateText, Mode=OneWay}" Foreground="{StaticResource IslandSecondaryBrush}" FontSize="13" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Visibility="{x:Bind h:Bind.NotNull(ViewModel.Weather), Mode=OneWay}">
+                        <TextBlock FontFamily="Segoe UI Emoji" FontSize="14" Text="{x:Bind ViewModel.Weather.Glyph, Mode=OneWay, FallbackValue=''}" />
+                        <TextBlock Foreground="White" FontSize="13" Text="{x:Bind ViewModel.Weather.TemperatureText, Mode=OneWay, FallbackValue=''}" />
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="PeekMedia" Visibility="Collapsed" ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Border Width="40" Height="40" CornerRadius="9" VerticalAlignment="Center" Background="#22FFFFFF">
+                        <Image x:Name="ArtPeek" Stretch="UniformToFill" />
+                    </Border>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{x:Bind ViewModel.Media.Title, Mode=OneWay, FallbackValue=''}" Foreground="White" FontSize="13" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                        <TextBlock Text="{x:Bind ViewModel.Media.Artist, Mode=OneWay, FallbackValue=''}" Foreground="{StaticResource IslandSecondaryBrush}" FontSize="12" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                    <c:AudioBars Grid.Column="2" MaxBarHeight="18" IsPlaying="{x:Bind ViewModel.IsMediaPlaying, Mode=OneWay}" />
+                </Grid>
+
+                <Grid x:Name="PeekTimer" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                        <FontIcon FontFamily="{StaticResource SymbolFont}" FontSize="18" Glyph="&#xE916;" Foreground="#FFFF9F0A" />
+                        <TextBlock Text="{l:Tr Key=Island.Timer.Title}" Foreground="#FFFF9F0A" FontSize="13" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{x:Bind ViewModel.TimerText, Mode=OneWay}" Foreground="#FFFF9F0A" FontSize="24" FontWeight="SemiBold" />
+                </Grid>
+
+                <Grid x:Name="PeekVolume" Visibility="Collapsed" ColumnSpacing="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon x:Name="PeekVolumeIcon" FontFamily="{StaticResource SymbolFont}" FontSize="16" Glyph="&#xE767;" Foreground="White" />
+                    <ProgressBar Grid.Column="1" VerticalAlignment="Center" Maximum="100" Value="{x:Bind h:Bind.Percent(ViewModel.Volume.Level), Mode=OneWay}" Foreground="White" />
+                    <TextBlock Grid.Column="2" Text="{x:Bind ViewModel.VolumePercentText, Mode=OneWay}" Foreground="White" FontSize="12" VerticalAlignment="Center" MinWidth="34" TextAlignment="Right" />
+                </Grid>
+
+                <Grid x:Name="PeekBattery" Visibility="Collapsed">
+                    <TextBlock VerticalAlignment="Center" Text="{x:Bind ViewModel.BatteryText, Mode=OneWay}" Foreground="White" FontSize="14" FontWeight="SemiBold" />
+                    <FontIcon x:Name="PeekBatteryIcon" HorizontalAlignment="Right" FontFamily="{StaticResource SymbolFont}" FontSize="22" Glyph="&#xEBB5;" Foreground="#FF30D158" />
+                </Grid>
+
+                <Grid x:Name="PeekNetwork" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                        <FontIcon x:Name="PeekNetworkIcon" FontFamily="{StaticResource SymbolFont}" FontSize="16" Glyph="&#xE701;" Foreground="White" />
+                        <TextBlock Text="{x:Bind ViewModel.NetworkText, Mode=OneWay}" Foreground="White" FontSize="13" FontWeight="SemiBold" MaxWidth="220" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="PeekNotification" Visibility="Collapsed" ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Width="36" Height="36" CornerRadius="10" Background="{StaticResource SpartanAccentBrush}" VerticalAlignment="Center">
+                        <FontIcon FontFamily="{StaticResource SymbolFont}" FontSize="16" Glyph="&#xE91C;" Foreground="White" />
+                    </Border>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{x:Bind ViewModel.Notification.Title, Mode=OneWay, FallbackValue=''}" Foreground="White" FontSize="13" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                        <TextBlock Text="{x:Bind ViewModel.Notification.Body, Mode=OneWay, FallbackValue=''}" Foreground="{StaticResource IslandSecondaryBrush}" FontSize="12" TextTrimming="CharacterEllipsis" MaxLines="1" />
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="PeekWeather" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                        <TextBlock FontFamily="Segoe UI Emoji" FontSize="24" Text="{x:Bind ViewModel.Weather.Glyph, Mode=OneWay, FallbackValue=''}" VerticalAlignment="Center" />
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{x:Bind ViewModel.Weather.City, Mode=OneWay, FallbackValue=''}" Foreground="White" FontSize="13" FontWeight="SemiBold" />
+                            <TextBlock x:Name="PeekWeatherDescription" Foreground="{StaticResource IslandSecondaryBrush}" FontSize="12" />
+                        </StackPanel>
+                    </StackPanel>
+                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{x:Bind ViewModel.Weather.TemperatureText, Mode=OneWay, FallbackValue=''}" Foreground="White" FontSize="26" FontWeight="Light" />
+                </Grid>
+
+                <Grid x:Name="PeekTimerDone" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                        <FontIcon FontFamily="{StaticResource SymbolFont}" FontSize="18" Glyph="&#xE916;" Foreground="#FFFF9F0A" />
+                        <TextBlock Text="{l:Tr Key=Island.Timer.Finished}" Foreground="White" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Style="{StaticResource IslandButtonStyle}" Command="{x:Bind ViewModel.CancelTimerCommand}" Content="&#xE711;" />
+                </Grid>
+
+                <!-- ============ EXPANDED (click) ============ -->
+                <Grid x:Name="ExpandedMedia" Visibility="Collapsed" Padding="6,16,6,12" RowSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid ColumnSpacing="14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Border Width="64" Height="64" CornerRadius="14" Background="#22FFFFFF">
+                            <Image x:Name="ArtExpanded" Stretch="UniformToFill" />
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                            <TextBlock Text="{x:Bind ViewModel.Media.Title, Mode=OneWay, FallbackValue=''}" Foreground="White" FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="{x:Bind ViewModel.Media.Artist, Mode=OneWay, FallbackValue=''}" Foreground="{StaticResource IslandSecondaryBrush}" FontSize="13" TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                        <c:AudioBars Grid.Column="2" MaxBarHeight="22" IsPlaying="{x:Bind ViewModel.IsMediaPlaying, Mode=OneWay}" />
+                    </Grid>
+                    <ProgressBar Grid.Row="1" Maximum="100" Foreground="White" Value="{x:Bind h:Bind.Percent(ViewModel.Media.Progress), Mode=OneWay, FallbackValue=0}" />
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="22" VerticalAlignment="Center">
+                        <Button Style="{StaticResource IslandButtonStyle}" Command="{x:Bind ViewModel.PreviousCommand}" Content="&#xE892;" FontSize="20" />
+                        <Button x:Name="PlayPauseButton" Style="{StaticResource IslandButtonStyle}" Command="{x:Bind ViewModel.PlayPauseCommand}" Content="&#xE768;" FontSize="26" Width="48" Height="48" CornerRadius="24" />
+                        <Button Style="{StaticResource IslandButtonStyle}" Command="{x:Bind ViewModel.NextCommand}" Content="&#xE893;" FontSize="20" />
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="ExpandedDashboard" Visibility="Collapsed" Padding="8,16,8,12" RowSpacing="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <StackPanel>
+                            <TextBlock Text="{x:Bind ViewModel.ClockText, Mode=OneWay}" Foreground="White" FontSize="34" FontWeight="SemiBold" />
+                            <TextBlock Text="{x:Bind ViewModel.DateText, Mode=OneWay}" Foreground="{StaticResource IslandSecondaryBrush}" FontSize="13" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="{x:Bind h:Bind.NotNull(ViewModel.Weather), Mode=OneWay}">
+                            <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Right">
+                                <TextBlock FontFamily="Segoe UI Emoji" FontSize="22" Text="{x:Bind ViewModel.Weather.Glyph, Mode=OneWay, FallbackValue=''}" />
+                                <TextBlock Foreground="White" FontSize="24" FontWeight="Light" Text="{x:Bind ViewModel.Weather.TemperatureText, Mode=OneWay, FallbackValue=''}" />
+                            </StackPanel>
+                            <TextBlock HorizontalAlignment="Right" Foreground="{StaticResource IslandSecondaryBrush}" FontSize="12" Text="{x:Bind ViewModel.Weather.City, Mode=OneWay, FallbackValue=''}" />
+                        </StackPanel>
+                    </Grid>
+                    <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Spacing="8">
+                        <TextBlock Text="{l:Tr Key=Island.Timer.Quick}" Foreground="{StaticResource IslandSecondaryBrush}" FontSize="12" />
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button Content="1 min" Command="{x:Bind ViewModel.StartTimerCommand}" CommandParameter="1" CornerRadius="14" />
+                            <Button Content="5 min" Command="{x:Bind ViewModel.StartTimerCommand}" CommandParameter="5" CornerRadius="14" />
+                            <Button Content="10 min" Command="{x:Bind ViewModel.StartTimerCommand}" CommandParameter="10" CornerRadius="14" />
+                            <Button Content="25 min" Command="{x:Bind ViewModel.StartTimerCommand}" CommandParameter="25" CornerRadius="14" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="ExpandedTimer" Visibility="Collapsed" Padding="8,16,8,12">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Spacing="4">
+                        <TextBlock Text="{l:Tr Key=Island.Timer.Title}" Foreground="#FFFF9F0A" FontSize="14" />
+                        <TextBlock Text="{x:Bind ViewModel.TimerText, Mode=OneWay}" Foreground="#FFFF9F0A" FontSize="48" FontWeight="SemiBold" />
+                        <ProgressBar Width="200" Maximum="1" Value="{x:Bind ViewModel.TimerProgress, Mode=OneWay}" Foreground="#FFFF9F0A" HorizontalAlignment="Left" />
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal" Spacing="12">
+                        <Button x:Name="TimerPauseButton" Style="{StaticResource IslandButtonStyle}" Width="52" Height="52" CornerRadius="26" Background="#33FF9F0A" Foreground="#FFFF9F0A"
+                                Command="{x:Bind ViewModel.ToggleTimerPauseCommand}" Content="&#xE769;" />
+                        <Button Style="{StaticResource IslandButtonStyle}" Width="52" Height="52" CornerRadius="26" Background="#33FFFFFF"
+                                Command="{x:Bind ViewModel.CancelTimerCommand}" Content="&#xE711;" />
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="ExpandedNotification" Visibility="Collapsed" Padding="4,14" ColumnSpacing="14">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Width="44" Height="44" CornerRadius="12" Background="{StaticResource SpartanAccentBrush}" VerticalAlignment="Top">
+                        <FontIcon FontFamily="{StaticResource SymbolFont}" FontSize="20" Glyph="&#xE91C;" Foreground="White" />
+                    </Border>
+                    <StackPanel Grid.Column="1" Spacing="2">
+                        <TextBlock Text="{x:Bind ViewModel.Notification.AppName, Mode=OneWay, FallbackValue=''}" Foreground="{StaticResource IslandSecondaryBrush}" FontSize="11" />
+                        <TextBlock Text="{x:Bind ViewModel.Notification.Title, Mode=OneWay, FallbackValue=''}" Foreground="White" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                        <TextBlock Text="{x:Bind ViewModel.Notification.Body, Mode=OneWay, FallbackValue=''}" Foreground="#CCFFFFFF" FontSize="13" TextWrapping="Wrap" MaxLines="3" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,22 @@
+name: Feature request
+description: Suggest an idea for SpartanX
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How should it look and behave? Mockups welcome.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [Dynamic Island, Dock, Menu bar, Welcome / Setup, Settings, Plugins, Other]

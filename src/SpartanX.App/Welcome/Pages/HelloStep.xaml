@@ -1,0 +1,33 @@
+<UserControl
+    x:Class="SpartanX.App.Welcome.Pages.HelloStep"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="using:SpartanX.App.Localization">
+
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="48">
+            <Grid Height="150" MinWidth="600">
+                <TextBlock x:Name="Greeting"
+                           Text="hello"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           FontFamily="Segoe UI Variable Display" FontWeight="SemiLight" FontSize="104"
+                           CharacterSpacing="-20" />
+            </Grid>
+
+            <StackPanel Spacing="14" HorizontalAlignment="Center">
+                <Button x:Name="StartButton" Click="Start_Click"
+                        Width="64" Height="64" CornerRadius="32" Padding="0"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource AccentButtonStyle}">
+                    <FontIcon FontFamily="{StaticResource SymbolFont}" Glyph="&#xE72A;" FontSize="22" />
+                </Button>
+                <TextBlock Text="{l:Tr Key=Welcome.Hello.GetStarted}" HorizontalAlignment="Center" Opacity="0.75" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10" Margin="0,0,0,28" Opacity="0.7">
+            <Image Source="ms-appx:///Assets/Logo.64.png" Width="20" Height="20" />
+            <TextBlock Text="SpartanX" FontWeight="SemiBold" VerticalAlignment="Center" />
+        </StackPanel>
+    </Grid>
+</UserControl>

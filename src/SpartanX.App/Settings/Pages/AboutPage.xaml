@@ -1,0 +1,39 @@
+<UserControl
+    x:Class="SpartanX.App.Settings.Pages.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:tk="using:CommunityToolkit.WinUI.Controls"
+    xmlns:l="using:SpartanX.App.Localization">
+
+    <StackPanel Spacing="4">
+        <StackPanel HorizontalAlignment="Center" Spacing="8" Margin="0,8,0,24">
+            <Image Source="ms-appx:///Assets/Logo.png" Width="112" Height="112" />
+            <TextBlock Text="SpartanX" Style="{StaticResource TitleLargeTextBlockStyle}" HorizontalAlignment="Center" />
+            <TextBlock x:Name="VersionText" Opacity="0.7" HorizontalAlignment="Center" />
+            <TextBlock Text="{l:Tr Key=Settings.About.Tagline}" Opacity="0.7" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <tk:SettingsCard Header="{l:Tr Key=Settings.About.Source}" Description="github.com/xX-VyrnCore-Xx/SpartanX" IsClickEnabled="True" Click="Repo_Click">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE943;" /></tk:SettingsCard.HeaderIcon>
+            <tk:SettingsCard.ActionIcon><FontIcon Glyph="&#xE8A7;" /></tk:SettingsCard.ActionIcon>
+        </tk:SettingsCard>
+        <tk:SettingsCard Header="{l:Tr Key=Settings.About.ReportIssue}" IsClickEnabled="True" Click="Issue_Click">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xEBE8;" /></tk:SettingsCard.HeaderIcon>
+            <tk:SettingsCard.ActionIcon><FontIcon Glyph="&#xE8A7;" /></tk:SettingsCard.ActionIcon>
+        </tk:SettingsCard>
+        <tk:SettingsCard Header="{l:Tr Key=Settings.About.License}" Description="MIT" IsClickEnabled="True" Click="License_Click">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE8A5;" /></tk:SettingsCard.HeaderIcon>
+            <tk:SettingsCard.ActionIcon><FontIcon Glyph="&#xE8A7;" /></tk:SettingsCard.ActionIcon>
+        </tk:SettingsCard>
+        <tk:SettingsExpander Header="{l:Tr Key=Settings.About.ThirdParty}">
+            <tk:SettingsExpander.HeaderIcon><FontIcon Glyph="&#xE734;" /></tk:SettingsExpander.HeaderIcon>
+            <tk:SettingsExpander.Items>
+                <tk:SettingsCard Header="Windows App SDK / WinUI 3" Description="MIT · Microsoft" />
+                <tk:SettingsCard Header="Windows Community Toolkit" Description="MIT · .NET Foundation" />
+                <tk:SettingsCard Header="WinUIEx" Description="MIT · Morten Nielsen" />
+                <tk:SettingsCard Header="NAudio" Description="MIT · Mark Heath" />
+                <tk:SettingsCard Header="Open-Meteo" Description="CC BY 4.0 · weather data" />
+            </tk:SettingsExpander.Items>
+        </tk:SettingsExpander>
+    </StackPanel>
+</UserControl>

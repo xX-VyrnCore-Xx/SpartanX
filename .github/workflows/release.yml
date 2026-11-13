@@ -29,7 +29,7 @@ jobs:
           - platform: ARM64
             rid: win-arm64
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           ref: ${{ inputs.tag || github.ref }}
       - uses: actions/setup-dotnet@v5
@@ -61,7 +61,7 @@ jobs:
           Compress-Archive -Path out/${{ matrix.rid }}/* -DestinationPath $name
           (Get-FileHash $name -Algorithm SHA256).Hash.ToLower() + "  $name" | Out-File "$name.sha256" -Encoding ascii
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.rid }}
           path: SpartanX-*.zip*
@@ -70,11 +70,11 @@ jobs:
     needs: package
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: dist
           merge-multiple: true
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ inputs.tag || github.ref_name }}
           prerelease: ${{ contains(inputs.tag || github.ref_name, '-') }}

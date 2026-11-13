@@ -80,6 +80,10 @@ public sealed partial class IslandViewModel : ObservableObject
 
     public bool IsMediaPlaying => Media?.IsPlaying == true;
 
+    public bool HasWeather => Weather is not null;
+
+    partial void OnWeatherChanged(WeatherSnapshot? value) => OnPropertyChanged(nameof(HasWeather));
+
     partial void OnMediaChanged(MediaSnapshot? value) => OnPropertyChanged(nameof(IsMediaPlaying));
 
     partial void OnModeChanged(IslandMode value) => UpdateTarget();

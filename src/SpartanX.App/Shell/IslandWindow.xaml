@@ -69,7 +69,7 @@
                         <TextBlock Text="{x:Bind ViewModel.DateText, Mode=OneWay}" Foreground="{StaticResource IslandSecondaryBrush}" FontSize="13" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                Visibility="{x:Bind h:Bind.NotNull(ViewModel.Weather), Mode=OneWay}">
+                                Visibility="{x:Bind h:Bind.Visible(ViewModel.HasWeather), Mode=OneWay}">
                         <TextBlock FontFamily="Segoe UI Emoji" FontSize="14" Text="{x:Bind ViewModel.Weather.Glyph, Mode=OneWay, FallbackValue=''}" />
                         <TextBlock Foreground="White" FontSize="13" Text="{x:Bind ViewModel.Weather.TemperatureText, Mode=OneWay, FallbackValue=''}" />
                     </StackPanel>
@@ -195,7 +195,7 @@
                             <TextBlock Text="{x:Bind ViewModel.ClockText, Mode=OneWay}" Foreground="White" FontSize="34" FontWeight="SemiBold" />
                             <TextBlock Text="{x:Bind ViewModel.DateText, Mode=OneWay}" Foreground="{StaticResource IslandSecondaryBrush}" FontSize="13" />
                         </StackPanel>
-                        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="{x:Bind h:Bind.NotNull(ViewModel.Weather), Mode=OneWay}">
+                        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="{x:Bind h:Bind.Visible(ViewModel.HasWeather), Mode=OneWay}">
                             <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Right">
                                 <TextBlock FontFamily="Segoe UI Emoji" FontSize="22" Text="{x:Bind ViewModel.Weather.Glyph, Mode=OneWay, FallbackValue=''}" />
                                 <TextBlock Foreground="White" FontSize="24" FontWeight="Light" Text="{x:Bind ViewModel.Weather.TemperatureText, Mode=OneWay, FallbackValue=''}" />

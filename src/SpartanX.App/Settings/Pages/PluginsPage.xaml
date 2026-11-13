@@ -1,0 +1,39 @@
+<UserControl
+    x:Class="SpartanX.App.Settings.Pages.PluginsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:tk="using:CommunityToolkit.WinUI.Controls"
+    xmlns:l="using:SpartanX.App.Localization">
+
+    <StackPanel Spacing="4">
+        <TextBlock Text="{l:Tr Key=Settings.Plugins.BuiltIn}" Style="{StaticResource BodyStrongTextBlockStyle}" Margin="2,0,0,4" />
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Island.Media}" Description="{l:Tr Key=Settings.Plugins.MediaDescription}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE8D6;" /></tk:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind I.MediaModule, Mode=TwoWay}" />
+        </tk:SettingsCard>
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Island.Notifications}" Description="{l:Tr Key=Settings.Plugins.NotificationsDescription}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xEA8F;" /></tk:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind I.NotificationsModule, Mode=TwoWay}" />
+        </tk:SettingsCard>
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Island.SystemStatus}" Description="{l:Tr Key=Settings.Plugins.SystemDescription}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE83F;" /></tk:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind I.SystemStatusModule, Mode=TwoWay}" />
+        </tk:SettingsCard>
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Island.Timer}" Description="{l:Tr Key=Settings.Plugins.TimerDescription}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE916;" /></tk:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind I.TimerModule, Mode=TwoWay}" />
+        </tk:SettingsCard>
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Island.Weather}" Description="{l:Tr Key=Settings.Plugins.WeatherDescription}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE753;" /></tk:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind I.WeatherModule, Mode=TwoWay}" />
+        </tk:SettingsCard>
+
+        <TextBlock Text="{l:Tr Key=Settings.Plugins.ThirdParty}" Style="{StaticResource BodyStrongTextBlockStyle}" Margin="2,20,0,4" />
+        <InfoBar IsOpen="True" IsClosable="False" Severity="Informational"
+                 Title="{l:Tr Key=Settings.Plugins.ComingSoon}" Message="{l:Tr Key=Settings.Plugins.ComingSoonDescription}">
+            <InfoBar.ActionButton>
+                <HyperlinkButton Content="{l:Tr Key=Settings.Plugins.ReadDocs}" NavigateUri="https://github.com/xX-VyrnCore-Xx/SpartanX/blob/main/docs/PLUGINS.md" />
+            </InfoBar.ActionButton>
+        </InfoBar>
+    </StackPanel>
+</UserControl>

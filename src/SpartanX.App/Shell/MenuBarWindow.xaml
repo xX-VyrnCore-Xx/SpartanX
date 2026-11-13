@@ -1,0 +1,108 @@
+<Window
+    x:Class="SpartanX.App.Shell.MenuBarWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:h="using:SpartanX.App.Helpers"
+    xmlns:l="using:SpartanX.App.Localization"
+    Title="SpartanX Menu Bar">
+
+    <Grid x:Name="Root" Padding="10,0" Background="Transparent">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Left: SpartanX menu + frontmost app -->
+        <StackPanel Orientation="Horizontal" Spacing="2">
+            <Button Style="{StaticResource MenuBarButtonStyle}" Padding="8,4" ToolTipService.ToolTip="SpartanX">
+                <Image Source="ms-appx:///Assets/Logo.64.png" Width="16" Height="16" />
+                <Button.Flyout>
+                    <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                        <MenuFlyoutItem Text="{l:Tr Key=MenuBar.About}" Click="About_Click">
+                            <MenuFlyoutItem.Icon><FontIcon Glyph="&#xE946;" /></MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem Text="{l:Tr Key=MenuBar.SpartanXSettings}" Click="Settings_Click">
+                            <MenuFlyoutItem.Icon><FontIcon Glyph="&#xE713;" /></MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem Text="{l:Tr Key=MenuBar.WindowsSettings}" Click="WindowsSettings_Click">
+                            <MenuFlyoutItem.Icon><FontIcon Glyph="&#xE770;" /></MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem Text="{l:Tr Key=MenuBar.StartMenu}" Click="Start_Click">
+                            <MenuFlyoutItem.Icon><FontIcon Glyph="&#xE721;" /></MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem Text="{l:Tr Key=MenuBar.TaskManager}" Click="TaskManager_Click">
+                            <MenuFlyoutItem.Icon><FontIcon Glyph="&#xE9D9;" /></MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem Text="{l:Tr Key=MenuBar.Sleep}" Click="Sleep_Click" />
+                        <MenuFlyoutItem Text="{l:Tr Key=MenuBar.Restart}" Click="Restart_Click" />
+                        <MenuFlyoutItem Text="{l:Tr Key=MenuBar.ShutDown}" Click="Shutdown_Click" />
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem Text="{l:Tr Key=MenuBar.Lock}" Click="Lock_Click">
+                            <MenuFlyoutItem.Icon><FontIcon Glyph="&#xE72E;" /></MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem Text="{l:Tr Key=MenuBar.Quit}" Click="Quit_Click" />
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+
+            <TextBlock Text="{x:Bind ViewModel.ActiveAppName, Mode=OneWay}"
+                       Visibility="{x:Bind h:Bind.Visible(ViewModel.Settings.ShowActiveAppName), Mode=OneWay}"
+                       Foreground="{ThemeResource MenuBarTextBrush}"
+                       FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center" Margin="6,0,0,0"
+                       MaxWidth="360" TextTrimming="CharacterEllipsis" />
+        </StackPanel>
+
+        <!-- Right: status items + clock -->
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="2">
+            <Button x:Name="NetworkButton" Style="{StaticResource MenuBarButtonStyle}" Click="Network_Click">
+                <FontIcon x:Name="NetworkIcon" FontFamily="{StaticResource SymbolFont}" FontSize="15" Glyph="&#xE701;" />
+            </Button>
+
+            <Button Style="{StaticResource MenuBarButtonStyle}">
+                <FontIcon x:Name="VolumeIcon" FontFamily="{StaticResource SymbolFont}" FontSize="15" Glyph="&#xE767;" />
+                <Button.Flyout>
+                    <Flyout Placement="Bottom">
+                        <StackPanel Width="260" Spacing="8">
+                            <TextBlock Text="{l:Tr Key=MenuBar.Sound}" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                            <Grid ColumnSpacing="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Button Padding="6" Click="Mute_Click">
+                                    <FontIcon FontFamily="{StaticResource SymbolFont}" FontSize="14" Glyph="&#xE74F;" />
+                                </Button>
+                                <Slider x:Name="VolumeSlider" Grid.Column="1" Minimum="0" Maximum="100" VerticalAlignment="Center" ValueChanged="VolumeSlider_ValueChanged" />
+                            </Grid>
+                            <HyperlinkButton Content="{l:Tr Key=MenuBar.SoundSettings}" Click="SoundSettings_Click" Padding="0" />
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+
+            <Button x:Name="BatteryButton" Style="{StaticResource MenuBarButtonStyle}" Click="Battery_Click"
+                    Visibility="{x:Bind h:Bind.Visible(ViewModel.Battery.HasBattery), Mode=OneWay}">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="{x:Bind ViewModel.BatteryPercentText, Mode=OneWay}" FontSize="12" VerticalAlignment="Center" />
+                    <FontIcon x:Name="BatteryIcon" FontFamily="{StaticResource SymbolFont}" FontSize="16" Glyph="&#xE83F;" />
+                </StackPanel>
+            </Button>
+
+            <Button Style="{StaticResource MenuBarButtonStyle}" Click="Notifications_Click" ToolTipService.ToolTip="{l:Tr Key=MenuBar.NotificationCenter}">
+                <FontIcon FontFamily="{StaticResource SymbolFont}" FontSize="15" Glyph="&#xE91C;" />
+            </Button>
+
+            <Button Style="{StaticResource MenuBarButtonStyle}" Padding="10,2">
+                <TextBlock Text="{x:Bind ViewModel.ClockText, Mode=OneWay}" FontSize="13" FontWeight="Medium" />
+                <Button.Flyout>
+                    <Flyout Placement="BottomEdgeAlignedRight">
+                        <CalendarView SelectionMode="None" IsTodayHighlighted="True" BorderThickness="0" />
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

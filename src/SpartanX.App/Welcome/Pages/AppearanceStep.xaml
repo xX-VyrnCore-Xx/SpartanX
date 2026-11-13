@@ -1,0 +1,69 @@
+<UserControl
+    x:Class="SpartanX.App.Welcome.Pages.AppearanceStep"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="using:SpartanX.App.Localization">
+
+    <StackPanel MaxWidth="640" VerticalAlignment="Center" Spacing="26">
+        <StackPanel Spacing="6">
+            <TextBlock Text="{l:Tr Key=Welcome.Appearance.Title}" Style="{StaticResource TitleLargeTextBlockStyle}" HorizontalAlignment="Center" />
+            <TextBlock Text="{l:Tr Key=Welcome.Appearance.Subtitle}" Opacity="0.7" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <!-- Light / Dark / Auto, like macOS -->
+        <StackPanel x:Name="ThemeCards" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="24">
+            <Button x:Name="LightCard" Tag="Light" Click="Theme_Click" Padding="0" Background="Transparent" BorderThickness="0">
+                <StackPanel Spacing="10">
+                    <Border x:Name="LightRing" CornerRadius="12" BorderThickness="3" Padding="3">
+                        <Border Width="150" Height="96" CornerRadius="9" Background="#FFF2F2F7">
+                            <Grid>
+                                <Border Height="10" VerticalAlignment="Top" Background="#E6FFFFFF" />
+                                <Border Width="70" Height="14" CornerRadius="7" VerticalAlignment="Bottom" Margin="0,0,0,8" Background="#CCDDDDE2" />
+                            </Grid>
+                        </Border>
+                    </Border>
+                    <TextBlock Text="{l:Tr Key=Enum.AppTheme.Light}" HorizontalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="DarkCard" Tag="Dark" Click="Theme_Click" Padding="0" Background="Transparent" BorderThickness="0">
+                <StackPanel Spacing="10">
+                    <Border x:Name="DarkRing" CornerRadius="12" BorderThickness="3" Padding="3">
+                        <Border Width="150" Height="96" CornerRadius="9" Background="#FF1C1C1E">
+                            <Grid>
+                                <Border Height="10" VerticalAlignment="Top" Background="#E62C2C2E" />
+                                <Border Width="70" Height="14" CornerRadius="7" VerticalAlignment="Bottom" Margin="0,0,0,8" Background="#CC3A3A3C" />
+                            </Grid>
+                        </Border>
+                    </Border>
+                    <TextBlock Text="{l:Tr Key=Enum.AppTheme.Dark}" HorizontalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="AutoCard" Tag="System" Click="Theme_Click" Padding="0" Background="Transparent" BorderThickness="0">
+                <StackPanel Spacing="10">
+                    <Border x:Name="AutoRing" CornerRadius="12" BorderThickness="3" Padding="3">
+                        <Grid Width="150" Height="96" CornerRadius="9">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Border Background="#FFF2F2F7" />
+                            <Border Grid.Column="1" Background="#FF1C1C1E" />
+                            <Border Grid.ColumnSpan="2" Width="70" Height="14" CornerRadius="7" VerticalAlignment="Bottom" Margin="0,0,0,8" Background="#998E8E93" />
+                        </Grid>
+                    </Border>
+                    <TextBlock Text="{l:Tr Key=Enum.AppTheme.System}" HorizontalAlignment="Center" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <StackPanel Spacing="10" HorizontalAlignment="Center">
+            <TextBlock Text="{l:Tr Key=Welcome.Appearance.Accent}" HorizontalAlignment="Center" Opacity="0.8" />
+            <StackPanel x:Name="Swatches" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Center" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Spacing="12" HorizontalAlignment="Center">
+            <TextBlock Text="{l:Tr Key=Settings.Appearance.Material}" VerticalAlignment="Center" />
+            <ComboBox x:Name="MaterialBox" MinWidth="200" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

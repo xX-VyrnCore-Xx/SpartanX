@@ -1,0 +1,48 @@
+<UserControl
+    x:Class="SpartanX.App.Settings.Pages.AnimationsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:tk="using:CommunityToolkit.WinUI.Controls"
+    xmlns:h="using:SpartanX.App.Helpers"
+    xmlns:l="using:SpartanX.App.Localization">
+
+    <StackPanel Spacing="4">
+        <!-- Live preview: tap to morph with the current spring. -->
+        <Border Height="150" CornerRadius="12" Margin="0,0,0,8" BorderThickness="1" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" Tapped="Preview_Tapped">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#FF2B1A3D" Offset="0" />
+                    <GradientStop Color="#FFB3202A" Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Border x:Name="PreviewPill" Background="Black" Width="120" Height="30" CornerRadius="15" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" />
+                <TextBlock Text="{l:Tr Key=Settings.Animations.TapToPreview}" Foreground="#CCFFFFFF" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,12" FontSize="12" />
+            </Grid>
+        </Border>
+
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Animations.Profile}" Description="{l:Tr Key=Settings.Animations.ProfileDescription}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE945;" /></tk:SettingsCard.HeaderIcon>
+            <ComboBox x:Name="ProfileBox" MinWidth="180" />
+        </tk:SettingsCard>
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Animations.Speed}" Description="{x:Bind h:Bind.Multiplier(A.SpeedMultiplier), Mode=OneWay}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xEC4A;" /></tk:SettingsCard.HeaderIcon>
+            <Slider Width="220" Minimum="0.5" Maximum="2" StepFrequency="0.05" Value="{x:Bind A.SpeedMultiplier, Mode=TwoWay}" />
+        </tk:SettingsCard>
+        <tk:SettingsExpander x:Name="CustomExpander" Header="{l:Tr Key=Settings.Animations.Custom}" Description="{l:Tr Key=Settings.Animations.CustomDescription}">
+            <tk:SettingsExpander.HeaderIcon><FontIcon Glyph="&#xE9E9;" /></tk:SettingsExpander.HeaderIcon>
+            <tk:SettingsExpander.Items>
+                <tk:SettingsCard Header="{l:Tr Key=Settings.Animations.Response}" Description="{x:Bind h:Bind.Seconds(A.SpringResponse), Mode=OneWay}">
+                    <Slider Width="220" Minimum="0.15" Maximum="1" StepFrequency="0.01" Value="{x:Bind A.SpringResponse, Mode=TwoWay}" />
+                </tk:SettingsCard>
+                <tk:SettingsCard Header="{l:Tr Key=Settings.Animations.Damping}" Description="{x:Bind h:Bind.Multiplier(A.SpringDampingFraction), Mode=OneWay}">
+                    <Slider Width="220" Minimum="0.3" Maximum="1" StepFrequency="0.01" Value="{x:Bind A.SpringDampingFraction, Mode=TwoWay}" />
+                </tk:SettingsCard>
+            </tk:SettingsExpander.Items>
+        </tk:SettingsExpander>
+        <tk:SettingsCard Header="{l:Tr Key=Settings.Animations.ReduceMotion}" Description="{l:Tr Key=Settings.Animations.ReduceMotionDescription}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE7B3;" /></tk:SettingsCard.HeaderIcon>
+            <ToggleSwitch IsOn="{x:Bind A.ReduceMotion, Mode=TwoWay}" />
+        </tk:SettingsCard>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,33 @@
+<UserControl
+    x:Class="SpartanX.App.Welcome.Pages.PrivacyStep"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="using:SpartanX.App.Localization">
+
+    <StackPanel MaxWidth="560" VerticalAlignment="Center" Spacing="20">
+        <FontIcon FontFamily="{StaticResource SymbolFont}" Glyph="&#xE72E;" FontSize="44" Foreground="{StaticResource SpartanAccentBrush}" />
+        <StackPanel Spacing="6">
+            <TextBlock Text="{l:Tr Key=Welcome.Privacy.Title}" Style="{StaticResource TitleLargeTextBlockStyle}" HorizontalAlignment="Center" />
+            <TextBlock Text="{l:Tr Key=Welcome.Privacy.Subtitle}" Opacity="0.7" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <StackPanel Spacing="2" CornerRadius="12" Padding="18,8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+            <ToggleSwitch Header="{l:Tr Key=Settings.General.LaunchAtStartup}" IsOn="{x:Bind General.LaunchAtStartup, Mode=TwoWay}" />
+            <ToggleSwitch Header="{l:Tr Key=Settings.General.CheckForUpdates}" IsOn="{x:Bind General.CheckForUpdates, Mode=TwoWay}" />
+            <Grid Padding="0,10" ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="{l:Tr Key=Welcome.Privacy.Notifications}" />
+                    <TextBlock x:Name="NotificationStatus" Opacity="0.65" FontSize="12" TextWrapping="Wrap" />
+                </StackPanel>
+                <Button x:Name="GrantButton" Grid.Column="1" Content="{l:Tr Key=Welcome.Privacy.Grant}" Click="Grant_Click" VerticalAlignment="Center" />
+            </Grid>
+        </StackPanel>
+
+        <TextBlock Text="{l:Tr Key=Welcome.Privacy.NoTelemetry}" Opacity="0.6" FontSize="12" TextWrapping="Wrap" TextAlignment="Center" />
+    </StackPanel>
+</UserControl>

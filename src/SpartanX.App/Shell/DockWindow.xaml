@@ -1,0 +1,31 @@
+<Window
+    x:Class="SpartanX.App.Shell.DockWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="using:SpartanX.App.Localization"
+    Title="SpartanX Dock">
+
+    <Grid x:Name="Root" Background="Transparent" AllowDrop="True"
+          PointerEntered="Root_PointerEntered" PointerMoved="Root_PointerMoved" PointerExited="Root_PointerExited"
+          DragOver="Root_DragOver" Drop="Root_Drop">
+
+        <!-- Everything that slides when auto-hide is on. -->
+        <Grid x:Name="Slider">
+            <Border x:Name="Bar"
+                    Background="{ThemeResource DockSurfaceBrush}"
+                    BorderBrush="{ThemeResource DockBorderBrush}" BorderThickness="1"
+                    CornerRadius="18"
+                    RightTapped="Bar_RightTapped" />
+
+            <StackPanel x:Name="Icons" Orientation="Horizontal" Spacing="6" />
+        </Grid>
+
+        <!-- macOS-style name label above the hovered icon. -->
+        <Canvas x:Name="Overlay" IsHitTestVisible="False">
+            <Border x:Name="Label" Visibility="Collapsed" Padding="10,4" CornerRadius="7"
+                    Background="{ThemeResource DockTooltipBrush}" BorderBrush="{ThemeResource DockBorderBrush}" BorderThickness="1">
+                <TextBlock x:Name="LabelText" FontSize="13" Foreground="{ThemeResource DockTooltipTextBrush}" />
+            </Border>
+        </Canvas>
+    </Grid>
+</Window>

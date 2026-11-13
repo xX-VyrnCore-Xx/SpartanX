@@ -4,6 +4,10 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      # Windows App SDK 2.x is a major upgrade that needs a deliberate migration.
+      - dependency-name: Microsoft.WindowsAppSDK
+        update-types: ["version-update:semver-major"]
     groups:
       windows-app-sdk:
         patterns: ["Microsoft.WindowsAppSDK", "Microsoft.Windows.SDK.BuildTools"]

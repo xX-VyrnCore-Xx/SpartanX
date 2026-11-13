@@ -8,6 +8,12 @@ updates:
       # Windows App SDK 2.x is a major upgrade that needs a deliberate migration.
       - dependency-name: Microsoft.WindowsAppSDK
         update-types: ["version-update:semver-major"]
+      # NAudio 3.x changed its API; migrate deliberately.
+      - dependency-name: NAudio.Wasapi
+        update-types: ["version-update:semver-major"]
+      # Stay on the .NET 10 (LTS) line of Microsoft.Extensions.*.
+      - dependency-name: Microsoft.Extensions.*
+        update-types: ["version-update:semver-major"]
     groups:
       windows-app-sdk:
         patterns: ["Microsoft.WindowsAppSDK", "Microsoft.Windows.SDK.BuildTools"]

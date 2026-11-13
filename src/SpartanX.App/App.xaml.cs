@@ -12,6 +12,7 @@ using SpartanX.Core;
 using SpartanX.Core.Abstractions;
 using SpartanX.Core.Dock;
 using SpartanX.Core.Island;
+using SpartanX.Core.Lifecycle;
 using SpartanX.Core.Localization;
 using SpartanX.Core.MenuBar;
 using SpartanX.Core.Settings;
@@ -23,11 +24,9 @@ namespace SpartanX.App;
 
 public partial class App : Application
 {
-    private const string InstanceMutexName = @"Local\SpartanX.SingleInstance";
-    private const string ActivateEventName = @"Local\SpartanX.Activate";
-
     private Mutex? _instanceMutex;
     private EventWaitHandle? _activateEvent;
+    private EventWaitHandle? _quitEvent;
     private ServiceProvider? _services;
     private ShellController? _shell;
     private WelcomeWindow? _welcome;
@@ -60,6 +59,14 @@ public partial class App : Application
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
+        // `SpartanX.exe --quit` / `--uninstall [--purge] [--silent]`: headless maintenance, no UI.
+        var options = CommandLineOptions.Parse(Environment.GetCommandLineArgs().Skip(1));
+        if (options.Command != LaunchCommand.Run)
+        {
+            Environment.Exit(MaintenanceRunner.Run(options));
+            return;
+        }
+
         if (!AcquireSingleInstance())
         {
             Environment.Exit(0);
@@ -179,17 +186,36 @@ public partial class App : Application
         _services?.GetService<SettingsService>()?.Dispose();
         ReleaseSingleInstance();
         Exit();
+
+        // Guarantee the process really ends (so its folder can be deleted) even if a
+        // foreground thread or a WinRT callback would otherwise keep it alive.
+        new Thread(() =>
+        {
+            Thread.Sleep(3000);
+            Environment.Exit(0);
+        })
+        { IsBackground = true }.Start();
+    }
+
+    /// <summary>
+    /// Settings → General → "Prepare to uninstall": hands over to a separate
+    /// <c>--uninstall</c> process that closes this one and cleans up.
+    /// </summary>
+    public void PrepareUninstall(bool purgeSettings)
+    {
+        var args = purgeSettings ? "--uninstall --purge" : "--uninstall";
+        Process.Start(new ProcessStartInfo(Environment.ProcessPath!, args) { UseShellExecute = false })?.Dispose();
     }
 
     private bool AcquireSingleInstance()
     {
-        _instanceMutex = new Mutex(true, InstanceMutexName, out var created);
+        _instanceMutex = new Mutex(true, InstanceControl.MutexName, out var created);
         if (!created)
         {
             // Another instance is running: ask it to show Settings, then leave.
             try
             {
-                using var existing = EventWaitHandle.OpenExisting(ActivateEventName);
+                using var existing = EventWaitHandle.OpenExisting(InstanceControl.ActivateEventName);
                 existing.Set();
             }
             catch (WaitHandleCannotBeOpenedException)
@@ -199,8 +225,12 @@ public partial class App : Application
             return false;
         }
 
-        _activateEvent = new EventWaitHandle(false, EventResetMode.AutoReset, ActivateEventName);
+        _activateEvent = new EventWaitHandle(false, EventResetMode.AutoReset, InstanceControl.ActivateEventName);
         ThreadPool.RegisterWaitForSingleObject(_activateEvent, (_, _) => MainQueue?.TryEnqueue(() => OpenSettings()), null, Timeout.Infinite, false);
+
+        // Lets `SpartanX.exe --quit` / `--uninstall` close this instance cleanly.
+        _quitEvent = new EventWaitHandle(false, EventResetMode.AutoReset, InstanceControl.QuitEventName);
+        ThreadPool.RegisterWaitForSingleObject(_quitEvent, (_, _) => MainQueue?.TryEnqueue(Quit), null, Timeout.Infinite, true);
         return true;
     }
 
@@ -216,6 +246,7 @@ public partial class App : Application
 
         _instanceMutex?.Dispose();
         _activateEvent?.Dispose();
+        _quitEvent?.Dispose();
     }
 
     internal static void Log(Exception exception)

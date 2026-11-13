@@ -93,7 +93,12 @@ internal sealed class UpdateService(IUpdateClient client, ISettingsService setti
             $ErrorActionPreference = 'Stop'
             Wait-Process -Id {{Environment.ProcessId}} -ErrorAction SilentlyContinue
             Start-Sleep -Milliseconds 300
-            Expand-Archive -LiteralPath '{{zip}}' -DestinationPath '{{installDir}}' -Force
+            $tmp = Join-Path $env:TEMP ('SpartanX-update-' + [guid]::NewGuid())
+            Expand-Archive -LiteralPath '{{zip}}' -DestinationPath $tmp -Force
+            # Newer packages wrap everything in a SpartanX\ folder; older ones don't.
+            $src = if (Test-Path (Join-Path $tmp 'SpartanX\SpartanX.exe')) { Join-Path $tmp 'SpartanX' } else { $tmp }
+            Copy-Item -Path (Join-Path $src '*') -Destination '{{installDir}}' -Recurse -Force
+            Remove-Item $tmp -Recurse -Force -ErrorAction SilentlyContinue
             Start-Process -FilePath '{{exe}}' -ArgumentList '--updated'
             """, cancellationToken);
 

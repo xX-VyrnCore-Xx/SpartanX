@@ -57,16 +57,32 @@
 
 ## 📦 Install
 
-1. Download `SpartanX-<version>-win-x64.zip` (or `win-arm64`) from [Releases](https://github.com/xX-VyrnCore-Xx/SpartanX/releases).
-2. Extract it to a folder you own, e.g. `%LOCALAPPDATA%\Programs\SpartanX` (in-app updates replace files there).
-3. Run `SpartanX.exe`. The Setup Assistant starts on first launch.
+1. Download `SpartanX-<version>-win-x64.zip` (or `win-arm64` for ARM PCs) from [Releases](https://github.com/xX-VyrnCore-Xx/SpartanX/releases).
+2. Right-click the ZIP → **Extract All…** into a new folder named `SpartanX`.
+3. Double-click **`Install.cmd`**. It copies SpartanX to `%LOCALAPPDATA%\Programs\SpartanX`, adds a Start menu shortcut and starts it. No admin rights needed.
+   *(Or just run `SpartanX.exe` from the extracted folder.)*
+4. The Setup Assistant opens on first launch.
 
 **Requirements:** Windows 11 22H2 or later, x64 or ARM64. No other runtime needed (self-contained).
 
 > ⚠️ The ZIP is not code-signed yet, so SmartScreen may warn on first run (*More info → Run anyway*). Verify the `.sha256` file published next to each ZIP.
 
 ### Uninstall
-Quit SpartanX from its menu (this restores the taskbar), turn off *Open at login* in Settings, then delete the folder and `%LOCALAPPDATA%\SpartanX`.
+
+- **Easiest:** double-click **`Uninstall.cmd`** in the install folder. It closes every SpartanX process, restores the Windows taskbar, turns off *Open at login*, removes the Start menu shortcut and deletes the folder (it asks whether to delete your settings too).
+- **From the app:** Settings → General → **Prepare to uninstall**, then delete the folder.
+- **From a terminal:**
+
+```bash
+SpartanX.exe --uninstall --purge
+```
+
+| Command | Effect |
+|---|---|
+| `SpartanX.exe --quit` | Closes all SpartanX processes and restores the taskbar |
+| `SpartanX.exe --uninstall` | `--quit` + removes launch at login |
+| `… --purge` | Also deletes `%LOCALAPPDATA%\SpartanX` (settings) |
+| `… --silent` | No confirmation dialog |
 
 ## 🛠️ Build from source
 

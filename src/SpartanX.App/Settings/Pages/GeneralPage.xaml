@@ -65,5 +65,20 @@
                 </Button.Flyout>
             </Button>
         </tk:SettingsCard>
+
+        <tk:SettingsCard Header="{l:Tr Key=Settings.General.PrepareUninstall}" Description="{l:Tr Key=Settings.General.PrepareUninstallDescription}">
+            <tk:SettingsCard.HeaderIcon><FontIcon Glyph="&#xE7E8;" /></tk:SettingsCard.HeaderIcon>
+            <Button Content="{l:Tr Key=Settings.General.PrepareUninstallButton}">
+                <Button.Flyout>
+                    <Flyout x:Name="UninstallFlyout">
+                        <StackPanel Spacing="12" MaxWidth="300">
+                            <TextBlock Text="{l:Tr Key=Settings.General.PrepareUninstallConfirm}" TextWrapping="Wrap" />
+                            <CheckBox x:Name="PurgeCheck" Content="{l:Tr Key=Settings.General.PrepareUninstallPurge}" />
+                            <Button Content="{l:Tr Key=Settings.General.PrepareUninstallButton}" Style="{StaticResource AccentButtonStyle}" Click="PrepareUninstall_Click" />
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </tk:SettingsCard>
     </StackPanel>
 </UserControl>

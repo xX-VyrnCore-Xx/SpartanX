@@ -93,10 +93,12 @@ feature is disabled. A 2-second enforcer re-hides the taskbar if Explorer brings
 
 ## Packaging & updates
 
-The app is **unpackaged and self-contained** (`WindowsPackageType=None`, `WindowsAppSDKSelfContained=true`): the
-release ZIP runs without installing the Windows App Runtime. `UpdateService` checks GitHub Releases, downloads the
-architecture-specific ZIP and hands over to a small PowerShell script that waits for exit, extracts in place and
-restarts.
+The app is **unpackaged and self-contained** (`WindowsPackageType=None`, `WindowsAppSDKSelfContained=true`), so it
+needs no Windows App Runtime. Releases ship an **Inno Setup installer** (`build/installer/SpartanX.iss`): per-user,
+no elevation, registered in *Installed apps*. Before installing or uninstalling it runs `SpartanX.exe --quit` /
+`--uninstall`, which ask the running instance to quit (named event), then kill leftovers after releasing their
+AppBars and restore the taskbar. `UpdateService` downloads the installer for this architecture and runs it with
+`/VERYSILENT`; the installer relaunches SpartanX with `--updated`, which waits for the old instance's mutex.
 
 ## Threading
 

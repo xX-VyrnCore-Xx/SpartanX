@@ -53,29 +53,25 @@
 - **Animation control**: Smooth / Snappy / Bouncy / Custom spring (response + damping), speed, Reduce Motion.
 - **Global shortcuts** (recordable): `Ctrl+Alt+D` Dock hiding, `Ctrl+Alt+I` Island, `Ctrl+Alt+,` Settings, `Ctrl+Alt+Space` play/pause, `Ctrl+Alt+T` 5-min timer.
 - **English and Italian** UI.
-- **In-app updates** from GitHub Releases.
+- **Installer + in-app updates** from GitHub Releases.
 
 ## 📦 Install
 
-1. Download `SpartanX-<version>-win-x64.zip` (or `win-arm64` for ARM PCs) from [Releases](https://github.com/xX-VyrnCore-Xx/SpartanX/releases).
-2. Right-click the ZIP → **Extract All…** into a new folder named `SpartanX`.
-3. Double-click **`Install.cmd`**. It copies SpartanX to `%LOCALAPPDATA%\Programs\SpartanX`, adds a Start menu shortcut and starts it. No admin rights needed.
-   *(Or just run `SpartanX.exe` from the extracted folder.)*
-4. The Setup Assistant opens on first launch.
+1. Download **`SpartanX-Setup-<version>-x64.exe`** from [Releases](https://github.com/xX-VyrnCore-Xx/SpartanX/releases) (`-arm64.exe` for ARM PCs such as Snapdragon laptops).
+2. Run it and follow the wizard. It installs for your user only — **no admin rights** — into `%LOCALAPPDATA%\Programs\SpartanX`, adds a Start menu entry and registers SpartanX in **Settings → Apps → Installed apps**.
+3. The Setup Assistant opens on first launch.
 
-**Requirements:** Windows 11 22H2 or later, x64 or ARM64. No other runtime needed (self-contained).
+Updates install themselves: Settings → General → **Check now → Update now** (the installer runs silently and restarts SpartanX).
 
-> ⚠️ The ZIP is not code-signed yet, so SmartScreen may warn on first run (*More info → Run anyway*). Verify the `.sha256` file published next to each ZIP.
+**Requirements:** Windows 11 22H2 or later, x64 or ARM64. No other runtime needed.
+
+> ⚠️ The installer is not code-signed yet, so SmartScreen may warn (*More info → Run anyway*). Verify the `.sha256` file published next to it.
 
 ### Uninstall
 
-- **Easiest:** double-click **`Uninstall.cmd`** in the install folder. It closes every SpartanX process, restores the Windows taskbar, turns off *Open at login*, removes the Start menu shortcut and deletes the folder (it asks whether to delete your settings too).
-- **From the app:** Settings → General → **Prepare to uninstall**, then delete the folder.
-- **From a terminal:**
+Windows **Settings → Apps → Installed apps → SpartanX → Uninstall**. The uninstaller first closes every SpartanX process, restores the Windows taskbar and removes launch at login, then asks whether to delete your settings too.
 
-```bash
-SpartanX.exe --uninstall --purge
-```
+Command-line helpers (also used by the installer):
 
 | Command | Effect |
 |---|---|

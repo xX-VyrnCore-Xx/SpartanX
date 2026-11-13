@@ -45,6 +45,13 @@ internal sealed class TaskbarController(string stateDirectory)
             return;
         }
 
+        // At sign-in SpartanX can start before Explorer has created the taskbar, so the
+        // first auto-hide request is lost and its strip stays reserved. Re-apply it.
+        if (FindWindow("Shell_TrayWnd", null) != 0 && !GetAutoHide())
+        {
+            SetAutoHide(true);
+        }
+
         foreach (var hwnd in TaskbarWindows())
         {
             if (IsWindowVisible(hwnd))
@@ -76,7 +83,12 @@ internal sealed class TaskbarController(string stateDirectory)
 
             foreach (var hwnd in TaskbarWindows())
             {
-                ShowWindow(hwnd, SW_SHOWNA);
+                // Only touch windows we hid: forcing a visible auto-hidden taskbar to show
+                // would pop it up for no reason.
+                if (!IsWindowVisible(hwnd))
+                {
+                    ShowWindow(hwnd, SW_SHOWNA);
+                }
             }
 
             _hidden = false;

@@ -109,7 +109,20 @@ internal sealed class ThemeService
             return;
         }
 
-        window.SystemBackdrop = _settings.Current.Appearance.Material switch
+        var material = _settings.Current.Appearance.Material;
+        var current = window.SystemBackdrop switch
+        {
+            MicaBackdrop { Kind: MicaKind.BaseAlt } => BackdropMaterial.Glass,
+            MicaBackdrop => BackdropMaterial.Mica,
+            DesktopAcrylicBackdrop => BackdropMaterial.Acrylic,
+            _ => BackdropMaterial.Solid,
+        };
+        if (current == material)
+        {
+            return; // Re-creating the backdrop on every theme/accent change makes windows flash.
+        }
+
+        window.SystemBackdrop = material switch
         {
             BackdropMaterial.Mica => new MicaBackdrop { Kind = MicaKind.Base },
             BackdropMaterial.Glass => new MicaBackdrop { Kind = MicaKind.BaseAlt },

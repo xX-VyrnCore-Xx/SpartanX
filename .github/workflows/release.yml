@@ -29,8 +29,10 @@ jobs:
         include:
           - platform: x64
             rid: win-x64
+            arch: x64
           - platform: ARM64
             rid: win-arm64
+            arch: arm64
     steps:
       - uses: actions/checkout@v7
         with:
@@ -58,17 +60,14 @@ jobs:
           -p:Version=${{ steps.version.outputs.version }}
           -o out/${{ matrix.rid }}
 
-      - name: Zip
+      - name: Build installer
         shell: pwsh
-        run: |
-          $name = "SpartanX-${{ steps.version.outputs.version }}-${{ matrix.rid }}.zip"
-          Compress-Archive -Path out/${{ matrix.rid }}/* -DestinationPath $name
-          (Get-FileHash $name -Algorithm SHA256).Hash.ToLower() + "  $name" | Out-File "$name.sha256" -Encoding ascii
+        run: ./build/installer/build.ps1 -Version '${{ steps.version.outputs.version }}' -Arch '${{ matrix.arch }}' -SourceDir "out/${{ matrix.rid }}"
 
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.rid }}
-          path: SpartanX-*.zip*
+          path: dist/SpartanX-Setup-*
 
   release:
     needs: package

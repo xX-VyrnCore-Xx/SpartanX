@@ -50,3 +50,10 @@ jobs:
       - name: Test (Windows)
         if: matrix.platform == 'x64'
         run: dotnet test tests/SpartanX.Core.Tests -c Release
+      # Validate the installer script on every PR, not only at release time.
+      - name: Installer (x64)
+        if: matrix.platform == 'x64'
+        shell: pwsh
+        run: |
+          dotnet publish src/SpartanX.App/SpartanX.App.csproj -c Release -p:Platform=x64 -r win-x64 -o out/win-x64
+          ./build/installer/build.ps1 -Version '0.0.0-ci' -Arch x64 -SourceDir out/win-x64

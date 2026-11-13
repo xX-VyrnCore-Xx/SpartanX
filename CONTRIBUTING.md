@@ -58,4 +58,6 @@ Want to add a language? Copy `en.json` to `<code>.json`, translate, and add it t
 
 1. Update `CHANGELOG.md`.
 2. Tag and push: `git tag v0.2.0 && git push origin v0.2.0` (use `-beta.N` suffix for pre-releases).
-3. The *Release* workflow builds x64/ARM64 ZIPs with checksums and publishes the GitHub Release; in-app updaters pick it up automatically.
+3. The *Release* workflow builds the x64/ARM64 installers (`build/installer/SpartanX.iss`, Inno Setup) with checksums and publishes the GitHub Release; in-app updaters pick it up automatically. You can also run the workflow manually with a new tag name.
+
+To build an installer locally: `dotnet publish src/SpartanX.App -c Release -p:Platform=x64 -r win-x64 -o out/win-x64`, then `./build/installer/build.ps1 -Version 0.0.0-dev -Arch x64 -SourceDir out/win-x64`.

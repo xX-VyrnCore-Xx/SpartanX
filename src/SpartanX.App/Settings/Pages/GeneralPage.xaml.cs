@@ -105,6 +105,12 @@ public sealed partial class GeneralPage : UserControl
 
     private void DataFolder_Click(object sender, RoutedEventArgs e) => ShellActions.Open(App.DataDirectory);
 
+    private void PrepareUninstall_Click(object sender, RoutedEventArgs e)
+    {
+        UninstallFlyout.Hide();
+        App.Current.PrepareUninstall(PurgeCheck.IsChecked == true);
+    }
+
     private void Reset_Click(object sender, RoutedEventArgs e)
     {
         ResetFlyout.Hide();

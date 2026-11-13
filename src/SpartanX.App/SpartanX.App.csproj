@@ -38,5 +38,7 @@
 
   <ItemGroup>
     <Content Include="Assets\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Shipped at the root of the release ZIP. -->
+    <None Include="Install.cmd;Uninstall.cmd" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

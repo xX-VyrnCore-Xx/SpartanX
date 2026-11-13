@@ -213,6 +213,13 @@ internal static class NativeMethods
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool UnregisterHotKey(nint hWnd, int id);
 
+    // ---- Dialogs -----------------------------------------------------------------------
+    public const uint MB_ICONINFORMATION = 0x40;
+    public const uint MB_ICONWARNING = 0x30;
+
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    public static extern int MessageBox(nint hWnd, string text, string caption, uint type);
+
     // ---- Input / power -----------------------------------------------------------------
     public const byte VK_LWIN = 0x5B;
     public const uint KEYEVENTF_KEYUP = 0x0002;

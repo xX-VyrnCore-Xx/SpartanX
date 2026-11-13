@@ -48,13 +48,21 @@
 
 ## 📦 Installazione
 
-1. Scarica `SpartanX-<versione>-win-x64.zip` (o `win-arm64`) da [Releases](https://github.com/xX-VyrnCore-Xx/SpartanX/releases).
-2. Estrai in una cartella tua, es. `%LOCALAPPDATA%\Programs\SpartanX`.
-3. Avvia `SpartanX.exe`: parte l'Assistente configurazione.
+1. Scarica `SpartanX-<versione>-win-x64.zip` (o `win-arm64` per PC ARM) da [Releases](https://github.com/xX-VyrnCore-Xx/SpartanX/releases).
+2. Clic destro sullo ZIP → **Estrai tutto…** in una nuova cartella chiamata `SpartanX`.
+3. Doppio clic su **`Install.cmd`**: copia SpartanX in `%LOCALAPPDATA%\Programs\SpartanX`, crea il collegamento nel menu Start e lo avvia. Non servono permessi di amministratore.
+   *(In alternativa avvia direttamente `SpartanX.exe` dalla cartella estratta.)*
+4. Al primo avvio parte l'Assistente configurazione.
 
 **Requisiti:** Windows 11 22H2 o successivo, x64 o ARM64. Nessun runtime aggiuntivo.
 
 > ⚠️ Lo ZIP non è ancora firmato: SmartScreen potrebbe avvisarti (*Ulteriori informazioni → Esegui comunque*). Verifica il file `.sha256` pubblicato accanto allo ZIP.
+
+### Disinstallazione
+
+- **Il modo più semplice:** doppio clic su **`Uninstall.cmd`** nella cartella di installazione. Chiude tutti i processi di SpartanX, ripristina la barra delle applicazioni, disattiva l'avvio all'accesso, rimuove il collegamento dal menu Start ed elimina la cartella (chiede se cancellare anche le impostazioni).
+- **Dall'app:** Impostazioni → Generali → **Prepara la disinstallazione**, poi elimina la cartella.
+- **Da terminale:** `SpartanX.exe --uninstall --purge` (`--quit` chiude soltanto tutti i processi).
 
 ## 🛠️ Compilare dal sorgente
 

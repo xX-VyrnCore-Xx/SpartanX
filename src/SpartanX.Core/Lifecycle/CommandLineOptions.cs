@@ -13,13 +13,18 @@ public enum LaunchCommand
     Uninstall,
 }
 
-public sealed record CommandLineOptions(LaunchCommand Command, bool Purge, bool Silent)
+/// <param name="WaitForPrevious">
+/// Set by <c>--restarted</c> / <c>--updated</c>: the previous instance is still shutting down,
+/// so wait for it instead of treating it as "already running".
+/// </param>
+public sealed record CommandLineOptions(LaunchCommand Command, bool Purge, bool Silent, bool WaitForPrevious = false)
 {
     public static CommandLineOptions Parse(IEnumerable<string> args)
     {
         var command = LaunchCommand.Run;
         var purge = false;
         var silent = false;
+        var waitForPrevious = false;
 
         foreach (var raw in args)
         {
@@ -43,10 +48,13 @@ public sealed record CommandLineOptions(LaunchCommand Command, bool Purge, bool 
                 case "silent" or "quiet" or "q":
                     silent = true;
                     break;
+                case "restarted" or "updated":
+                    waitForPrevious = true;
+                    break;
             }
         }
 
         // --purge only makes sense while uninstalling.
-        return new CommandLineOptions(command, purge && command == LaunchCommand.Uninstall, silent);
+        return new CommandLineOptions(command, purge && command == LaunchCommand.Uninstall, silent, waitForPrevious);
     }
 }

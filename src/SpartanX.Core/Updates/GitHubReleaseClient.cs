@@ -4,7 +4,11 @@ using System.Text.Json.Serialization;
 
 namespace SpartanX.Core.Updates;
 
-public sealed record UpdateInfo(SemVersion Version, string TagName, string Notes, string ReleasePageUrl, string? PackageUrl, string? PackageName);
+public sealed record UpdateInfo(SemVersion Version, string TagName, string Notes, string ReleasePageUrl, string? PackageUrl, string? PackageName)
+{
+    /// <summary>True when the package is the Inno Setup installer rather than a ZIP.</summary>
+    public bool IsInstaller => PackageName?.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) == true;
+}
 
 public interface IUpdateClient
 {
@@ -12,8 +16,9 @@ public interface IUpdateClient
     Task<UpdateInfo?> GetUpdateAsync(SemVersion current, bool includePrereleases, CancellationToken cancellationToken = default);
 }
 
-/// <summary>Checks GitHub Releases of this repository. Assets are expected to be named
-/// <c>SpartanX-{version}-win-{arch}.zip</c> (produced by the release workflow).</summary>
+/// <summary>Checks GitHub Releases of this repository. Prefers the installer
+/// <c>SpartanX-Setup-{version}-{arch}.exe</c>; falls back to the legacy
+/// <c>SpartanX-{version}-win-{arch}.zip</c> of releases up to v0.1.1.</summary>
 public sealed class GitHubReleaseClient : IUpdateClient
 {
     private readonly HttpClient _http;
@@ -56,8 +61,11 @@ public sealed class GitHubReleaseClient : IUpdateClient
                 continue;
             }
 
-            var asset = release.Assets?.FirstOrDefault(a =>
-                a.Name.EndsWith($"-win-{_arch}.zip", StringComparison.OrdinalIgnoreCase));
+            var assets = release.Assets ?? [];
+            var asset = assets.FirstOrDefault(a =>
+                    a.Name.StartsWith("SpartanX-Setup-", StringComparison.OrdinalIgnoreCase) &&
+                    a.Name.EndsWith($"-{_arch}.exe", StringComparison.OrdinalIgnoreCase))
+                ?? assets.FirstOrDefault(a => a.Name.EndsWith($"-win-{_arch}.zip", StringComparison.OrdinalIgnoreCase));
             best = new UpdateInfo(version, release.TagName, release.Body ?? "", release.HtmlUrl, asset?.BrowserDownloadUrl, asset?.Name);
         }
 

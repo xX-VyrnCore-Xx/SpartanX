@@ -196,9 +196,25 @@ public sealed partial class IslandWindow : Window
         }
     }
 
+    private byte[]? _artworkBytes;
+
     private async Task UpdateArtworkAsync()
     {
-        var image = await Bind.FromBytesAsync(ViewModel.Media?.Thumbnail);
+        // Media snapshots arrive every second while playing (position updates); only
+        // decode the album art when it actually changed.
+        var bytes = ViewModel.Media?.Thumbnail;
+        if (ReferenceEquals(bytes, _artworkBytes))
+        {
+            return;
+        }
+
+        _artworkBytes = bytes;
+        var image = await Bind.FromBytesAsync(bytes);
+        if (!ReferenceEquals(bytes, _artworkBytes))
+        {
+            return; // A newer track arrived while decoding.
+        }
+
         ArtCompact.Source = image;
         ArtPeek.Source = image;
         ArtExpanded.Source = image;

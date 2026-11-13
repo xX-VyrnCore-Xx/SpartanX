@@ -22,6 +22,13 @@ public class CommandLineTests
         Assert.Equal(purge, o.Purge);
     }
 
+    [Theory]
+    [InlineData("--restarted", true)]
+    [InlineData("--updated", true)]
+    [InlineData("--autostart", false)]
+    public void Wait_for_previous(string arg, bool expected) =>
+        Assert.Equal(expected, CommandLineOptions.Parse([arg]).WaitForPrevious);
+
     [Fact]
     public void Silent_flag() => Assert.True(CommandLineOptions.Parse(["--quit", "--silent"]).Silent);
 }

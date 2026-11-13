@@ -197,6 +197,13 @@ internal sealed class ShellController : IDisposable
     private void SeedPinnedAppsOnFirstRun()
     {
         var dock = S.Dock;
+        if (dock.PinsImported)
+        {
+            return;
+        }
+
+        // Only ever import once: if the user later empties the Dock, it must stay empty.
+        dock.PinsImported = true;
         if (dock.PinnedApps.Count > 0 || dock.Stacks.Count > 0)
         {
             return;

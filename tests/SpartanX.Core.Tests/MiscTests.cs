@@ -58,6 +58,10 @@ public class GitHubReleaseClientTests
 {
     private const string Json = """
     [
+      { "tag_name": "v0.4.0", "html_url": "https://x/4", "body": "setup", "draft": false, "prerelease": false,
+        "assets": [ { "name": "SpartanX-Setup-0.4.0-x64.exe", "browser_download_url": "https://x/4-x64.exe" },
+                    { "name": "SpartanX-Setup-0.4.0-x64.exe.sha256", "browser_download_url": "https://x/4-x64.sha" },
+                    { "name": "SpartanX-Setup-0.4.0-arm64.exe", "browser_download_url": "https://x/4-arm.exe" } ] },
       { "tag_name": "v0.3.0-beta.1", "html_url": "https://x/3b", "body": "beta", "draft": false, "prerelease": true,
         "assets": [ { "name": "SpartanX-0.3.0-beta.1-win-x64.zip", "browser_download_url": "https://x/3b.zip" } ] },
       { "tag_name": "v0.2.0", "html_url": "https://x/2", "body": "notes", "draft": false, "prerelease": false,
@@ -71,29 +75,42 @@ public class GitHubReleaseClientTests
         new(new HttpClient(new StubHandler(Json)), "o", "r", arch);
 
     [Fact]
-    public async Task Picks_newest_stable_release_and_matching_asset()
+    public async Task Prefers_the_installer_for_this_architecture()
     {
         SemVersion.TryParse("0.1.0", out var current);
         var update = await Client(Architecture.Arm64).GetUpdateAsync(current, includePrereleases: false);
 
         Assert.NotNull(update);
-        Assert.Equal("v0.2.0", update.TagName);
-        Assert.Equal("https://x/2-arm.zip", update.PackageUrl);
+        Assert.Equal("v0.4.0", update.TagName);
+        Assert.Equal("https://x/4-arm.exe", update.PackageUrl);
+        Assert.True(update.IsInstaller);
     }
 
     [Fact]
-    public async Task Includes_prereleases_when_asked()
+    public async Task Falls_back_to_legacy_zip()
+    {
+        SemVersion.TryParse("0.1.0", out var current);
+        var json = Json.Replace("\"v0.4.0\"", "\"v0.0.1\"");
+        var client = new GitHubReleaseClient(new HttpClient(new StubHandler(json)), "o", "r", Architecture.Arm64);
+        var update = await client.GetUpdateAsync(current, includePrereleases: false);
+
+        Assert.Equal("https://x/2-arm.zip", update!.PackageUrl);
+        Assert.False(update.IsInstaller);
+    }
+
+    [Fact]
+    public async Task Includes_prereleases_when_asked_but_still_picks_highest()
     {
         SemVersion.TryParse("0.1.0", out var current);
         var update = await Client(Architecture.X64).GetUpdateAsync(current, includePrereleases: true);
 
-        Assert.Equal("v0.3.0-beta.1", update!.TagName);
+        Assert.Equal("v0.4.0", update!.TagName);
     }
 
     [Fact]
     public async Task Returns_null_when_up_to_date()
     {
-        SemVersion.TryParse("0.2.0", out var current);
+        SemVersion.TryParse("0.4.0", out var current);
         Assert.Null(await Client(Architecture.X64).GetUpdateAsync(current, includePrereleases: false));
     }
 

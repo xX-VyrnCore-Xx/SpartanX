@@ -61,6 +61,8 @@ public sealed partial class DockSettings : ObservableObject
     [ObservableProperty] public partial bool ShowRunningIndicators { get; set; } = true;
     [ObservableProperty] public partial bool BounceOnLaunch { get; set; } = true;
     [ObservableProperty] public partial bool MinimizeOnClickWhenActive { get; set; } = true;
+    /// <summary>True once the Windows taskbar pins were imported, so emptying the Dock sticks.</summary>
+    [ObservableProperty] public partial bool PinsImported { get; set; }
 
     public ObservableCollection<PinnedApp> PinnedApps { get; set; } = [];
     public ObservableCollection<string> Stacks { get; set; } = [];

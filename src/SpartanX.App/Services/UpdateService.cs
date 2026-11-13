@@ -7,8 +7,8 @@ using SpartanX.Core.Updates;
 namespace SpartanX.App.Services;
 
 /// <summary>
-/// In-app updates from GitHub Releases. Downloads the ZIP for this architecture, then a tiny
-/// PowerShell script waits for SpartanX to exit, extracts it over the install folder and restarts.
+/// In-app updates from GitHub Releases. Downloads the installer for this architecture and runs it
+/// silently (legacy ZIP releases: a tiny PowerShell script extracts it over the install folder).
 /// </summary>
 internal sealed class UpdateService(IUpdateClient client, ISettingsService settings, HttpClient http)
 {
@@ -64,6 +64,7 @@ internal sealed class UpdateService(IUpdateClient client, ISettingsService setti
 
         var work = Path.Combine(Path.GetTempPath(), "SpartanX-update-" + update.Version);
         Directory.CreateDirectory(work);
+        // The downloaded package: SpartanX-Setup-*.exe, or a ZIP for legacy releases.
         var zip = Path.Combine(work, update.PackageName ?? "update.zip");
 
         using (var response = await http.GetAsync(update.PackageUrl, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
@@ -84,6 +85,18 @@ internal sealed class UpdateService(IUpdateClient client, ISettingsService setti
                     progress?.Report((double)read / total);
                 }
             }
+        }
+
+        if (update.IsInstaller)
+        {
+            // The installer closes SpartanX itself (--quit), upgrades in place and, being
+            // silent, relaunches it with --updated.
+            Process.Start(new ProcessStartInfo(zip, "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP-")
+            {
+                UseShellExecute = true,
+            })?.Dispose();
+            App.Current.Quit();
+            return;
         }
 
         var installDir = AppContext.BaseDirectory.TrimEnd('\\');

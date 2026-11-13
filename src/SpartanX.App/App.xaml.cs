@@ -67,7 +67,7 @@ public partial class App : Application
             return;
         }
 
-        if (!AcquireSingleInstance())
+        if (!AcquireSingleInstance(options.WaitForPrevious))
         {
             Environment.Exit(0);
             return;
@@ -207,9 +207,22 @@ public partial class App : Application
         Process.Start(new ProcessStartInfo(Environment.ProcessPath!, args) { UseShellExecute = false })?.Dispose();
     }
 
-    private bool AcquireSingleInstance()
+    private bool AcquireSingleInstance(bool waitForPrevious)
     {
         _instanceMutex = new Mutex(true, InstanceControl.MutexName, out var created);
+        if (!created && waitForPrevious)
+        {
+            // Restart / update: the old instance is quitting; take over once it has.
+            try
+            {
+                created = _instanceMutex.WaitOne(TimeSpan.FromSeconds(15));
+            }
+            catch (AbandonedMutexException)
+            {
+                created = true; // Previous instance died without releasing: we own it now.
+            }
+        }
+
         if (!created)
         {
             // Another instance is running: ask it to show Settings, then leave.

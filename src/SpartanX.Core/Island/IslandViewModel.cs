@@ -54,6 +54,14 @@ public sealed partial class IslandViewModel : ObservableObject
         _system.NetworkChanged += (_, n) => _ui.Post(() => HandleNetwork(n));
         _notifications.NotificationArrived += (_, n) => _ui.Post(() => HandleNotification(n));
 
+        _settings.Changed += (_, e) =>
+        {
+            if (e.Section is IslandSettings)
+            {
+                ApplyModuleSettings(e.PropertyName);
+            }
+        };
+
         _lastBattery = system.Battery;
         _lastNetwork = system.Network;
         UpdateTarget();
@@ -182,9 +190,36 @@ public sealed partial class IslandViewModel : ObservableObject
 
     // ---- Timer --------------------------------------------------------------
 
+    /// <summary>Turning a module off (or on) in Settings takes effect immediately.</summary>
+    private void ApplyModuleSettings(string? property)
+    {
+        switch (property)
+        {
+            case nameof(IslandSettings.MediaModule):
+                HandleMedia(Media);
+                break;
+            case nameof(IslandSettings.TimerModule) when !Settings.TimerModule:
+                CancelTimer();
+                break;
+            case nameof(IslandSettings.SystemStatusModule) when !Settings.SystemStatusModule:
+                Activities.Remove(IslandActivityKind.Volume);
+                Activities.Remove(IslandActivityKind.Battery);
+                Activities.Remove(IslandActivityKind.Network);
+                break;
+            case nameof(IslandSettings.NotificationsModule) when !Settings.NotificationsModule:
+                Activities.Remove(IslandActivityKind.Notification);
+                break;
+        }
+    }
+
     [RelayCommand]
     private void StartTimer(string? minutes)
     {
+        if (!Settings.TimerModule)
+        {
+            return;
+        }
+
         if (!double.TryParse(minutes, System.Globalization.CultureInfo.InvariantCulture, out var m) || m <= 0)
         {
             return;

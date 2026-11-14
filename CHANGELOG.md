@@ -5,6 +5,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ## [Unreleased]
 
+### Added
+- **SpartanX for macOS**: a native SwiftUI Dynamic Island around the notch (pill on Macs without one) — Now Playing for Music and Spotify, timer, battery/charging, weather; hover to peek, click to open; macOS-style Setup Assistant and System Settings-style preferences (EN/IT); open at login. Universal DMG (Apple Silicon + Intel), macOS 14+.
+
+## [0.1.2] - 2026-11-13
+
 ### Changed
 - **Releases now ship a real installer** (`SpartanX-Setup-<version>-<arch>.exe`, Inno Setup): per-user, no admin, Start menu entry, listed in Windows *Installed apps* with an uninstaller that closes SpartanX and restores the taskbar first. The ZIPs, `Install.cmd` and `Uninstall.cmd` are gone.
 - In-app updates download and run the installer silently.

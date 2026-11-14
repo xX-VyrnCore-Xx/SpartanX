@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+    <key>CFBundleLocalizations</key>
+    <array>
+        <string>en</string>
+        <string>it</string>
+    </array>
+    <key>CFBundleDisplayName</key>
+    <string>SpartanX</string>
+    <key>CFBundleName</key>
+    <string>SpartanX</string>
+    <key>CFBundleExecutable</key>
+    <string>SpartanX</string>
+    <key>CFBundleIdentifier</key>
+    <string>io.github.vyrncore.spartanx</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
+    <key>CFBundleShortVersionString</key>
+    <string>__VERSION__</string>
+    <key>CFBundleVersion</key>
+    <string>__BUILD__</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>14.0</string>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.utilities</string>
+    <!-- Menu-bar agent: no Dock icon, no app menu. -->
+    <key>LSUIElement</key>
+    <true/>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>SpartanX reads what Music or Spotify is playing to show it in the Dynamic Island, and sends play/pause/skip when you use its controls.</string>
+    <key>NSHumanReadableCopyright</key>
+    <string>© SpartanX contributors · MIT License</string>
+</dict>
+</plist>

@@ -69,8 +69,29 @@ jobs:
           name: ${{ matrix.rid }}
           path: dist/SpartanX-Setup-*
 
+  macos:
+    name: Package macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+      - name: Resolve version
+        id: version
+        run: |
+          tag='${{ inputs.tag || github.ref_name }}'
+          echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+      - name: Test
+        run: swift test --package-path macos
+      - name: Build DMG
+        run: ./macos/scripts/build-dmg.sh '${{ steps.version.outputs.version }}'
+      - uses: actions/upload-artifact@v7
+        with:
+          name: macos
+          path: dist/SpartanX-*-macOS.dmg*
+
   release:
-    needs: package
+    needs: [package, macos]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v8

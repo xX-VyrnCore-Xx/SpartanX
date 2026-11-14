@@ -16,13 +16,15 @@
   <img alt="Windows 11" src="https://img.shields.io/badge/Windows%2011-22H2%2B-0078D4" />
 </p>
 
-<p align="center"><a href="README.it.md">🇮🇹 Leggi in italiano</a></p>
+<p align="center"><a href="README.it.md">🇮🇹 Leggi in italiano</a> · <a href="macos/README.md">🍎 macOS version</a></p>
 
 ---
 
 > **Status: early preview (0.1).** Core features work; expect rough edges. Feedback and PRs are very welcome.
 
 ## ✨ Features
+
+> **On a Mac?** SpartanX for macOS is a native SwiftUI Dynamic Island around the notch — see [macos/README.md](macos/README.md). Everything below is the Windows 11 app.
 
 ### Dynamic Island
 - **Black pill under the top edge** that morphs between *compact*, *peek* (hover) and *expanded* (click) with real spring physics — interrupted animations keep their velocity.
@@ -110,6 +112,7 @@ SpartanX/
 │  ├─ SpartanX.Core/        # Cross-platform: settings, view-models, spring physics,
 │  │                        # magnification math, localisation, updater, weather
 │  └─ SpartanX.App/         # WinUI 3 app (Windows App SDK 1.8, unpackaged)
+├─ macos/                   # Native SwiftUI Dynamic Island for macOS (Swift package)
 │     ├─ Shell/             # Island, Dock, Menu bar windows + ShellController
 │     ├─ Welcome/           # Setup Assistant
 │     ├─ Settings/          # System Settings–style window and pages

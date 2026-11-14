@@ -9,7 +9,9 @@
   Animazioni a molla, Assistente configurazione stile macOS e Impostazioni stile Impostazioni di Sistema.
 </p>
 
-<p align="center"><a href="README.md">🇬🇧 Read in English</a></p>
+<p align="center"><a href="README.md">🇬🇧 Read in English</a> · <a href="macos/README.md">🍎 Versione macOS</a></p>
+
+> **Hai un Mac?** SpartanX per macOS è una Dynamic Island nativa in SwiftUI attorno al notch (macOS 14+, DMG universale Apple Silicon/Intel). Installazione: apri il DMG, trascina SpartanX in Applicazioni; al primo avvio clic destro → Apri (su macOS 15: Impostazioni di Sistema → Privacy e sicurezza → Apri comunque). Dettagli in [macos/README.md](macos/README.md).
 
 ---
 
